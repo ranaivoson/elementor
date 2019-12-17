@@ -1,0 +1,31 @@
+version: '3'
+services:
+    php:
+        image: wordpress
+        restart: always
+        environment:
+            WORDPRESS_DB_HOST: mysql
+            WORDPRESS_DB_USER: elementor
+            WORDPRESS_DB_PASSWORD: elementor
+            WORDPRESS_DB_NAME: elementor
+        volumes:
+            - ./app:/var/www/html/
+        ports:
+            - '80:80'
+    mysql:
+        build:
+            context: ./build/mysql
+        restart: always
+        ports:
+            - '3306:3306'
+        environment:
+            MYSQL_ROOT_PASSWORD: root
+            MYSQL_USER: elementor
+            MYSQL_PASSWORD: elementor
+            MYSQL_DATABASE: elementor
+    phpmyadmin:
+        image: phpmyadmin/phpmyadmin
+        ports:
+            - '8080:80'
+        environment:
+            - PMA_HOST=mysql
